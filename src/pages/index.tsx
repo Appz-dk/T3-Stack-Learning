@@ -1,25 +1,9 @@
+import React from "react";
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
 
-import { trpc } from "../utils/trpc";
-import React, { useState } from "react";
-
-const Home: NextPage = () => {
-  // Communicate frontend to server
-  const createBuildMutation = trpc.builds.createBuild.useMutation();
-  const [build, setBuildOrder] = useState("");
-  const [matchUp, setMatchUp] = useState("zvt");
-
-  const handleSubmitBuildOrder = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await createBuildMutation.mutateAsync({
-      matchUp,
-      build,
-    });
-  };
-
+const HomePage: NextPage = () => {
   return (
     <>
       <Head>
@@ -40,7 +24,7 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default HomePage;
 
 // const AuthShowcase: React.FC = () => {
 //   const { data: sessionData } = useSession();

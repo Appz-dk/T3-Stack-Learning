@@ -4,7 +4,7 @@ import { trpc } from "../utils/trpc";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 
-const SubmitBuild: NextPage = () => {
+const SubmitBuildPage: NextPage = () => {
   // Communicate frontend to server
   const createBuildMutation = trpc.builds.createBuild.useMutation();
 
@@ -68,4 +68,4 @@ const SubmitBuild: NextPage = () => {
   );
 };
 
-export default SubmitBuild;
+export default SubmitBuildPage;
