@@ -66,7 +66,11 @@ model VerificationToken {
 }
 
 model BuildOrder {
-    id      String @id @default(cuid())
-    matchUp String
-    build   String
+    id          String  @id @default(cuid())
+    matchUp     String
+    buildType   String
+    title       String?
+    author      String?
+    description String?
+    build       String
 }

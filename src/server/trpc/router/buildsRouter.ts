@@ -4,7 +4,7 @@ import { router, publicProcedure } from "../trpc";
 
 export const buildsRouter = router({
     createBuild: publicProcedure
-        .input(z.object({ matchUp: z.string(), build: z.string() }))
+        .input(z.object({ matchUp: z.string(), build: z.string(), buildType: z.string(), description: z.string().nullable(), title: z.string().nullable(), author: z.string().nullable() }))
         .mutation(async ({ input, ctx }) => {
             // Save build order to database
             const build = await ctx.prisma.buildOrder.create({

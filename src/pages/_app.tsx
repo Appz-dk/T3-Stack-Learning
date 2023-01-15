@@ -6,16 +6,18 @@ import { trpc } from "../utils/trpc";
 
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
+import Layout from "../components/layout/Layout";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
-      <Navbar />
-      <Component {...pageProps} />
-    </SessionProvider>
+    <Layout>
+      <SessionProvider session={session}>
+        <Component {...pageProps} />
+      </SessionProvider>
+    </Layout>
   );
 };
 
