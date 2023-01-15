@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
 import { buildTypes } from "../submit-build";
 
-const MatchUpsPage = () => {
+const BuildPage = () => {
   const router = useRouter();
   const { buildId } = router.query as { buildId: string };
 
@@ -24,4 +24,4 @@ const MatchUpsPage = () => {
   );
 };
 
-export default MatchUpsPage;
+export default BuildPage;
