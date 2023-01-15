@@ -3,9 +3,18 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import Badge, { Variant } from "../../../../../components/Badge";
 import { trpc } from "../../../../../utils/trpc";
+import { buildTypes, makeSafeBuildTypeString } from "../../../../submit-build";
 
-const Build: React.FC<{ build: BuildOrder }> = ({ build }) => {
+const BuildCard: React.FC<{ build: BuildOrder }> = ({ build }) => {
+  const badgeVariant = {
+    cheese: "warning",
+    economic: "success",
+    "all-in": "danger",
+    "timing-attack": "primary",
+  }[makeSafeBuildTypeString(build.buildType)] as Variant;
+
   return (
     <div className="flex max-w-sm flex-col justify-between rounded-lg border border-gray-200 bg-white p-6 text-sm shadow-md dark:border-gray-700 dark:bg-gray-800">
       <a href="#">
@@ -18,15 +27,13 @@ const Build: React.FC<{ build: BuildOrder }> = ({ build }) => {
       </p>
       <p className="mb-3 font-semibold text-gray-700 dark:text-gray-400">
         Style
-        <span className="ml-2 rounded bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800">
-          {build.buildType}
-        </span>
+        <Badge text={build.buildType} variant={badgeVariant || "primary"} />
       </p>
       <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
         Created by {build.author || "Anonymous"}
       </p>
       <Link
-        href="#"
+        href={`/builds/${build.id}`}
         className="inline-flex max-w-max items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
       >
         View Build
@@ -48,14 +55,6 @@ const Build: React.FC<{ build: BuildOrder }> = ({ build }) => {
   );
 };
 
-export const buildTypes: string[] = [
-  "Economic",
-  "Timing Attack",
-  "All-In",
-  "Cheese",
-  "Co-op",
-];
-
 const BuildTypeToggles: React.FC<{
   handleBuildTypeChange: (buildType: string) => void;
   selectedBuildType: string;
@@ -65,23 +64,23 @@ const BuildTypeToggles: React.FC<{
       <label className="font-bold">Build Type</label>
       <ul className="mt-2 w-full items-center rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white sm:flex">
         {buildTypes.map((buildType) => {
-          const buildTypeSafeString = buildType.toLowerCase().replace(" ", "-");
+          const safeBuildTypeString = makeSafeBuildTypeString(buildType);
           return (
             <li
-              key={buildTypeSafeString}
+              key={safeBuildTypeString}
               className="w-full border-b border-gray-200 dark:border-gray-600 sm:border-b-0 sm:border-r"
             >
               <div className="flex items-center pl-3">
                 <input
-                  id={`build-type-${buildTypeSafeString}`}
+                  id={`build-type-${safeBuildTypeString}`}
                   type="radio"
-                  value={buildTypeSafeString}
-                  checked={buildTypeSafeString === selectedBuildType}
+                  value={safeBuildTypeString}
+                  checked={safeBuildTypeString === selectedBuildType}
                   onChange={(e) => handleBuildTypeChange(e.currentTarget.value)}
                   className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-700"
                 />
                 <label
-                  htmlFor={`build-type-${buildTypeSafeString}`}
+                  htmlFor={`build-type-${safeBuildTypeString}`}
                   className="ml-2 w-full py-3 text-sm font-medium text-gray-900 dark:text-gray-300"
                 >
                   {buildType}
@@ -96,13 +95,21 @@ const BuildTypeToggles: React.FC<{
 };
 
 const MatchUpsPage = () => {
-  const { raceName = "", opponentRace = "" } = useRouter().query;
+  const router = useRouter();
+  const { raceName = "", opponentRace = "" } = router.query;
   const [selectedBuildType, setSelectedBuildType] = useState(
     buildTypes[0]!.toLowerCase()
   );
 
-  const matchUp = `${raceName![0]?.toLowerCase()}v${opponentRace![0]?.toLowerCase()}`;
-  const builds = trpc.builds.getBuildsByMatchUp.useQuery({ matchUp });
+  const matchUp = `${raceName[0]?.toLowerCase()}v${opponentRace[0]?.toLowerCase()}`;
+  const builds = trpc.builds.getBuildsByMatchUp.useQuery(
+    { matchUp },
+    { initialData: [] }
+  );
+
+  const filteredBuilds = builds.data.filter(
+    (build) => build.buildType === selectedBuildType
+  );
 
   return (
     <>
@@ -122,8 +129,8 @@ const MatchUpsPage = () => {
             selectedBuildType={selectedBuildType}
           />
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {builds.data?.map((build) => (
-              <Build key={build.id} build={build} />
+            {filteredBuilds.map((build) => (
+              <BuildCard key={build.id} build={build} />
             ))}
           </div>
         </div>

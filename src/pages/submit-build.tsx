@@ -4,6 +4,17 @@ import { trpc } from "../utils/trpc";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 
+export const buildTypes = [
+  "Economic",
+  "All-In",
+  "Timing Attack",
+  "Cheese",
+] as const;
+
+export const makeSafeBuildTypeString = (buildType: string) => {
+  return buildType.toLowerCase().replace(" ", "-");
+};
+
 const SubmitBuildPage: NextPage = () => {
   // Communicate frontend to server
   const createBuildMutation = trpc.builds.createBuild.useMutation();
@@ -82,11 +93,14 @@ const SubmitBuildPage: NextPage = () => {
                 onChange={(e) => setBuildType(e.target.value)}
                 required
               >
-                <option value="economic">Economic</option>
-                <option value="all-in">All-In</option>
-                <option value="cheesy">Cheese</option>
-                <option value="timing-attack">Timing Attack</option>
-                <option value="co-op">Co-op</option>
+                {buildTypes.map((buildType) => (
+                  <option
+                    key={buildType}
+                    value={makeSafeBuildTypeString(buildType)}
+                  >
+                    {buildType}
+                  </option>
+                ))}
               </select>
             </label>
           </fieldset>
