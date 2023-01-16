@@ -1,8 +1,6 @@
 import Head from "next/head";
-import { BuildOrder } from "@prisma/client";
 import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
-import { buildTypes } from "../submit-build";
 
 const BuildPage = () => {
   const router = useRouter();
