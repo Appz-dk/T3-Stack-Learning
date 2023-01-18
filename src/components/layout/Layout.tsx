@@ -3,9 +3,9 @@ import Navbar from "../Navbar";
 
 const Layout: React.FC<PropsWithChildren> = (props) => {
   return (
-    <div className="flex h-screen max-h-screen flex-shrink flex-col overflow-y-auto bg-gray-800">
+    <div className="flex h-screen flex-col bg-gray-800">
       <Navbar />
-      <main className="h-full">{props.children}</main>
+      <main className="flex-grow">{props.children}</main>
     </div>
   );
 };

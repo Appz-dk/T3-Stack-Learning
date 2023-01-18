@@ -12,8 +12,8 @@ const BuildCard: React.FC<{ build: BuildOrder }> = ({ build }) => {
   }[makeSafeBuildTypeString(build.buildType)] as Variant;
 
   return (
-    <div className="flex max-w-sm flex-col justify-between rounded-lg border border-gray-200 bg-white p-6 text-sm shadow-md dark:border-gray-700 dark:bg-gray-800">
-      <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+    <div className="flex max-w-sm flex-col justify-between rounded-lg border border-gray-200 bg-white p-4 text-sm shadow-md dark:border-gray-700 dark:bg-gray-800 sm:min-w-[16rem]">
+      <h5 className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">
         {build.title || "No Title"}
       </h5>
       <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">

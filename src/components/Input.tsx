@@ -5,15 +5,16 @@ type TInputProps = {
   id: string;
   type?: string;
   className?: string;
+  placeholder?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Input: React.FC<PropsWithChildren<TInputProps>> = ({
-  children,
+const Input: React.FC<TInputProps> = ({
   value,
   id,
   type = "text",
   className,
+  placeholder,
   onChange,
 }) => {
   return (
@@ -23,7 +24,8 @@ const Input: React.FC<PropsWithChildren<TInputProps>> = ({
       type={type}
       value={value}
       onChange={onChange}
-    ></input>
+      placeholder={placeholder}
+    />
   );
 };
 

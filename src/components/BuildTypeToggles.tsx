@@ -8,13 +8,13 @@ const BuildTypeToggles: React.FC<{
   return (
     <fieldset className="w-full">
       <Label>Build Type</Label>
-      <ul className="mt-2 w-full items-center rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white sm:flex">
-        {buildTypes.map((buildType) => {
+      <ul className="mt-1 w-full rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+        {["All", ...buildTypes].map((buildType) => {
           const safeBuildTypeString = makeSafeBuildTypeString(buildType);
           return (
             <li
               key={safeBuildTypeString}
-              className="w-full min-w-fit border-b border-gray-200 dark:border-gray-600 sm:border-b-0 sm:border-r"
+              className="w-full  min-w-fit border-b border-r border-gray-200 last-of-type:border-b-0 last-of-type:border-r-0 dark:border-gray-600"
             >
               <div className="flex items-center pl-2 pr-1">
                 <input
